@@ -59,8 +59,8 @@ if [[ $(bc -l <<< "${MAX_UNVALIDATED_BLOCK} - ${LOCAL_HEIGHT}") -gt ${SYNC_WINDO
   # restart container
   docker restart ${CONTAINER_NAME}
 
-elif [[ $(bc -l <<< "${MAX_UNVALIDATED_BLOCK} - ${EXPLORER_HEIGTH}") -gt ${SYNC_WINDOW} ]] && [[ ${UPTIME} -gt ${MIN_UPTIME} ]]; then
-  echo -e ${RED}"$(date -u) ALARM! ${CONTAINER_NAME} ${HOSTNAME} EXPLORER_HEIGHT: ${EXPLORER_HEIGTH}\nLOCAL_HEIGHT: ${LOCAL_HEIGHT}"${NORMAL}
-  MSG=$(echo -e "$(date -u) ${CONTAINER_NAME} ${HOSTNAME} EXPLORER_HEIGHT: ${EXPLORER_HEIGTH}\nLOCAL_HEIGHT: ${LOCAL_HEIGHT}")
-  send_message $MSG
+# elif [[ $(bc -l <<< "${MAX_UNVALIDATED_BLOCK} - ${EXPLORER_HEIGTH}") -gt ${SYNC_WINDOW} ]] && [[ ${UPTIME} -gt ${MIN_UPTIME} ]]; then
+#  echo -e ${RED}"$(date -u) ALARM! ${CONTAINER_NAME} ${HOSTNAME} EXPLORER_HEIGHT: ${EXPLORER_HEIGTH}\nLOCAL_HEIGHT: ${LOCAL_HEIGHT}"${NORMAL}
+#  MSG=$(echo -e "$(date -u) ${CONTAINER_NAME} ${HOSTNAME} EXPLORER_HEIGHT: ${EXPLORER_HEIGTH}\nLOCAL_HEIGHT: ${LOCAL_HEIGHT}")
+#  send_message $MSG
 fi
