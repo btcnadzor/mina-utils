@@ -1,7 +1,6 @@
 #!/bin/bash
 
 validator_address="B62qjhiEXP45KEk8Fch4FnYJQ7UMMfiR3hq9ZeMUZ8ia3MbfEteSYDg"
-new_place=""
 TG_TOKEN=$1
 CHAT_ID=$2
 
