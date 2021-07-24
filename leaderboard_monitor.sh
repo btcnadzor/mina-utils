@@ -5,7 +5,7 @@ new_place=""
 TG_TOKEN=$1
 CHAT_ID=$2
 
-r=`curl -s 'http://uptime.minaprotocol.com/getPageData.php?pageNumber=1' \
+r=`curl -s 'http://uptime.minaprotocol.com/getPageData.php?pageNumber=1&_=1627162675974' \
   -H 'Connection: keep-alive' \
   -H 'Accept: */*' \
   -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.164 Safari/537.36' \
@@ -16,8 +16,7 @@ r=`curl -s 'http://uptime.minaprotocol.com/getPageData.php?pageNumber=1' \
   -H 'dnt: 1' \
   --compressed \
   --insecure | grep -A 3 -B 3 $validator_address | grep 'td scope="row">' | egrep -o "[0-9]+"`
-  
-  previous_place=${r}
+previous_place=${r}
 
 
 send_message() {
@@ -32,7 +31,7 @@ while true; do
   sleep 300
   
   new_place=$r
-  
+  echo -e "previous_place=${previous_place} new_place=${new_place}"
   if [ $previous_place -gt  $new_place ]; then
     msg="We have lost $(echo ${previous_place}-${new_place} | bc) position(s). Current position is ${new_place}"
     previous_place=${new_place}
