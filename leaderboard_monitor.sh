@@ -24,7 +24,7 @@ while true; do
     send_message ${MSG}
     
   elif [[ $previous_place <  $new_place ]]; then
-    MSG="We moved up $(echo ${new_place}-${previous_place} | bc) position(s), current position ${new_place}"
+    MSG="We moved up $(echo ${new_place}-${previous_place} | bc) position(s). Current position ${new_place}"
     previous_place=${new_place}
     send_message ${MSG}
   fi
