@@ -8,7 +8,7 @@ previous_place=$(curl -s 'http://uptime.minaprotocol.com/getPageData.php?pageNum
 send_message() {
   if [[ ${TG_TOKEN} != "" ]]; then
     local tg_msg="$@"
-    curl -s -H 'Content-Type: application/json' --request 'POST' -d "{\"chat_id\":\"${$CHAT_ID}\",\"text\":\"${tg_msg}\"}" "https://api.telegram.org/bot${TG_TOKEN}/sendMessage"
+    curl -s -H 'Content-Type: application/json' --request 'POST' -d "{\"chat_id\":\"${CHAT_ID}\",\"text\":\"${tg_msg}\"}" "https://api.telegram.org/bot${TG_TOKEN}/sendMessage"
   fi
 }
 
