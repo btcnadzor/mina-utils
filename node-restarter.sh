@@ -14,6 +14,11 @@ if [[ ${CONTAINER_NAME} == "" ]]
   then
     CONTAINER_NAME="mina"
 fi
+VERBOSE=$4
+if [[ ${VERBOSE} == "" ]]
+  then
+    VERBOSE="false"
+fi
 
 GREEN="\e[92m"
 RED="\e[91m"
@@ -25,6 +30,14 @@ MAX_UNVALIDATED_BLOCK=$(jq .highest_unvalidated_block_length_received <<< $STATU
 LOCAL_HEIGHT=$(jq .blockchain_length <<< $STATUS_DATA)
 UPTIME=$(jq .uptime_secs <<< $STATUS_DATA)
 SYNC_STATUS=$(jq .sync_status <<< $STATUS_DATA)
+
+
+custom_echo() {
+  if [[ ${VERBOSE} == "true" ]]; then
+    local local_msg="$@"
+    echo -e $local_msg
+  fi
+}
 
 
 send_message() {
@@ -43,13 +56,13 @@ send_file() {
 }
 
 
-echo -e "\n-------------------------"
-echo -e $(date)
-echo -e "LOCAL_HEIGHT/MAX_UNVALIDATED_HEIGHT: ${LOCAL_HEIGHT}\\${MAX_UNVALIDATED_BLOCK}"       
-echo -e "Uptime: ${UPTIME} | Status: ${SYNC_STATUS}"   
+custom_echo "\n-------------------------"
+custom_echo $(date)
+custom_echo "LOCAL_HEIGHT/MAX_UNVALIDATED_HEIGHT: ${LOCAL_HEIGHT}\\${MAX_UNVALIDATED_BLOCK}"       
+custom_echo "Uptime: ${UPTIME} | Status: ${SYNC_STATUS}"   
 
 if [[ $(bc -l <<< "${MAX_UNVALIDATED_BLOCK} - ${LOCAL_HEIGHT}") -gt ${SYNC_WINDOW} ]] && [[ ${UPTIME} -gt ${MIN_UPTIME} ]]; then
-  echo -e ${RED}"$(date -u) ALARM! ${CONTAINER_NAME} node on ${HOSTNAME} is out of sync"${NORMAL}
+  custom_echo ${RED}"$(date -u) ALARM! ${CONTAINER_NAME} node on ${HOSTNAME} is out of sync"${NORMAL}
   MSG=$(echo -e "$(date -u) ${CONTAINER_NAME} node on ${HOSTNAME} LOCAL_HEIGHT: ${LOCAL_HEIGHT}\nMAX_UNVALIDATED_BLOCK: ${MAX_UNVALIDATED_BLOCK}")
   # export logs
   docker logs ${CONTAINER_NAME} --since "${LOG_PERIOD_MIN}m" > ${LOG_NAME}
